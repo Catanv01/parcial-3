@@ -8,7 +8,11 @@ export default async function LoanRequestsPage({ searchParams }: LoanRequestsPag
   // Esta consulta solo prepara las opciones que se necesitan para el selector del filtro.
   const toolsResponse = await apiFetch("/tools");
   const tools: Tool[] = toolsResponse.ok ? await toolsResponse.json() : [];
-
+  const { toolId } = await searchParams;
+  const selectedStatus = toolId === "pending" || toolId === "ready" ? toolId : undefined;
+  const endpointURL = selectedStatus
+    ? `/orders/search?status=${selectedStatus}&limit=20`
+    : "/orders";
   // TODO FRONT-A: leer searchParams y consultar las solicitudes con apiFetch.
   // TODO FRONT-A: agregar el formulario GET de filtro usando tools y la opción All tools.
   // TODO FRONT-A: mostrar las solicitudes y sus enlaces al comprobante correspondiente.
