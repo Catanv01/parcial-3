@@ -5,7 +5,6 @@ import type { LoanRequest, Tool } from "../../lib/loan-types";
 type LoanRequestsPageProps = { searchParams: Promise<{ toolId?: string }> };
 
 export default async function LoanRequestsPage({ searchParams }: LoanRequestsPageProps) {
-  // Esta consulta solo prepara las opciones que se necesitan para el selector del filtro.
   const toolsResponse = await apiFetch("/tools");
   const tools: Tool[] = toolsResponse.ok ? await toolsResponse.json() : [];
   const { toolId } = await searchParams;
