@@ -1,9 +1,25 @@
 import Link from "next/link";
 import { apiFetch } from "../../../lib/api";
 import type { Tool } from "../../../lib/loan-types";
+import { redirect } from "next/navigation";
+
 
 async function createLoanRequest(formData: FormData) {
   "use server";
+
+    const response = await apiFetch("/loan-requests", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      purpose: String(formData.get("purpose") ?? ""),
+      days: Number(formData.get("days")),
+      toolId: Number(formData.get("toolId")),
+    }),
+  });
+
+  if (response.status !== 201) return;
+  const created: { id: number } = await response.json();
+  redirect(`/loan-requests/${created.id}`);
 
   // TODO FRONT-B: leer el formulario, convertir los números y enviar el POST con apiFetch.
   // TODO FRONT-B: si se crea la solicitud, abrir el comprobante con el ID recibido.

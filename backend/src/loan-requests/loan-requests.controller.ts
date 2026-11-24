@@ -12,7 +12,7 @@ export class LoanRequestsController {
 
   @Get()
     findAll(@Query(requestValidationPipe) query: ListLoanRequestsDto) {
-    return this.service.findAll();
+    return this.service.findAll(query);
   }
 
   @Get(":id")
